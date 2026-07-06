@@ -4,7 +4,7 @@ function HomePage() {
     return (
         <div>
             <header className="text-center my-5">
-                <h1>Library Management System</h1>
+                <h1 className="display-4">Library Management System</h1>
                 <p className="lead">Manage books, authors, and readers in one place</p>
                 <Link className="btn btn-primary btn-lg" to="/books">Go to Book Catalog</Link>
             </header>
