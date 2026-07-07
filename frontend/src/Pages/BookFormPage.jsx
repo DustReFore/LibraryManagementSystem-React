@@ -1,5 +1,5 @@
 import { getBookById, createBook, updateBook } from "../api/booksApi.js";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuthors } from "../api/authorsApi.js";
 
@@ -64,76 +64,74 @@ function BookFormPage() {
     }
 
     return (
-        <div>
-            <div className="container my-5">
-                <h1>{isEdit ? "Edit book" : "Add book"}</h1>
+        <div className="container my-5">
+            <h1>{isEdit ? "Edit book" : "Add book"}</h1>
 
-                <form onSubmit={handleSubmit} className="mt-4">
-                    <div className="mb-3">
-                        <label htmlFor="title" className="form-label">Title</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="title"
-                            name={"title"}
-                            value={form.title}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
+            <form onSubmit={handleSubmit} className="mt-4">
+                <div className="mb-3">
+                    <label htmlFor="title" className="form-label">Title</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="title"
+                        name={"title"}
+                        value={form.title}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="author" className="form-label">Author</label>
-                        <select
-                            className="form-select"
-                            id="author"
-                            name="authorId"
-                            value={form.authorId}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Choose author</option>
+                <div className="mb-3">
+                    <label htmlFor="author" className="form-label">Author</label>
+                    <select
+                        className="form-select"
+                        id="author"
+                        name="authorId"
+                        value={form.authorId}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">Choose author</option>
 
-                            {authors.map((author) => (
-                                <option key={author.id} value={author.id}>
-                                    {author.firstName} {author.lastName}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                        {authors.map((author) => (
+                            <option key={author.id} value={author.id}>
+                                {author.firstName} {author.lastName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="year" className="form-label">Year</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            id="year"
-                            name="year"
-                            value={form.year}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
+                <div className="mb-3">
+                    <label htmlFor="year" className="form-label">Year</label>
+                    <input
+                        type="number"
+                        className="form-control"
+                        id="year"
+                        name="year"
+                        value={form.year}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="categoryName" className="form-label">Category</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="categoryName"
-                            name="categoryName"
-                            value={form.categoryName}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
+                <div className="mb-3">
+                    <label htmlFor="categoryName" className="form-label">Category</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="categoryName"
+                        name="categoryName"
+                        value={form.categoryName}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-                    <button type="submit" className="btn btn-success">
-                        {isEdit ? "Save changes" : "Save book"}
-                    </button>
-                    <Link to="/books" className="btn btn-secondary ms-2">Cancel</Link>
-                </form>
-            </div>
+                <button type="submit" className="btn btn-success">
+                    {isEdit ? "Save changes" : "Save book"}
+                </button>
+                <Link to="/books" className="btn btn-secondary ms-2">Cancel</Link>
+            </form>
         </div>
     )
 }

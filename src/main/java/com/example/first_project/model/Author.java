@@ -1,5 +1,7 @@
 package com.example.first_project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +9,17 @@ public class Author {
     private int id;
     private String firstName;
     private String lastName;
-    private int year;
+    private int yearOfBirth;
     private String country;
 
+    @JsonIgnore
     private List<Book> books =  new ArrayList<Book>();
 
-    public Author(int id, String firstName, String lastName,  int year, String country) {
+    public Author(int id, String firstName, String lastName,  int yearOfBirth, String country) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.year = year;
+        this.yearOfBirth = yearOfBirth;
         this.country = country;
     }
 
@@ -24,6 +27,7 @@ public class Author {
     public String toString() {
         return firstName + " " + lastName;
     }
+
 
     public Author() {}
 
@@ -36,8 +40,8 @@ public class Author {
     public String getLastName() {return lastName;}
     public void setLastName(String lastName) {this.lastName = lastName;}
 
-    public int getYear() {return year;}
-    public void setYear(int year) {this.year = year;}
+    public int getYearOfBirth() {return yearOfBirth;}
+    public void setYearOfBirth(int yearOfBirth) {this.yearOfBirth = yearOfBirth;}
 
     public String getCountry() {return country;}
     public void setCountry(String country) {this.country = country;}

@@ -1,5 +1,6 @@
 package com.example.first_project.controller;
 
+import com.example.first_project.model.Author;
 import com.example.first_project.model.Book;
 import com.example.first_project.service.LibraryService;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,12 @@ public class BookController {
 
     @PostMapping
     public Book createBook(@RequestBody Book book) {
+        Author author = libraryService.getAuthors()
+                .stream()
+                .filter(a -> a.getId() == book.getAuthor().getId())
+                .findFirst()
+                .orElse(null);
+        book.setAuthor(author);
         book.setId(libraryService.getBooks().size() + 1);
         libraryService.addBook(book);
         return book;
@@ -38,6 +45,12 @@ public class BookController {
 
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable int id, @RequestBody Book book) {
+        Author author = libraryService.getAuthors()
+                .stream()
+                .filter(a -> a.getId() == book.getAuthor().getId())
+                .findFirst()
+                .orElse(null);
+        book.setAuthor(author);
         book.setId(id);
         libraryService.getBooks().removeIf(b -> b.getId() == id);
         libraryService.addBook(book);
