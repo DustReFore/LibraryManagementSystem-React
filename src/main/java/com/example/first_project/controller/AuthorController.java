@@ -2,11 +2,12 @@ package com.example.first_project.controller;
 
 import com.example.first_project.model.Author;
 import com.example.first_project.service.LibraryService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/authors")
 public class AuthorController {
     private final LibraryService libraryService;
@@ -15,10 +16,9 @@ public class AuthorController {
         this.libraryService = libraryService;
     }
 
-    @GetMapping()
-    public String listAuthors(Model model) {
-        model.addAttribute("authors", libraryService.getAuthors());
-        return "authors";
+    @GetMapping
+    public List<Author> getAuthors() {
+        return libraryService.getAuthors();
     }
 
     // Создание автора

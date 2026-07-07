@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { deleteBook, getBooks } from "../api/booksApi.js";
 
 function BooksPage() {
     const [books, setBooks] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/books")
-            .then((response) => response.json())
-            .then((data) => setBooks(data))
+        getBooks().then(setBooks);
     }, []);
 
     function handleDelete(id) {
-        fetch(`http://localhost:8080/api/books/${id}`, {
-            method: 'DELETE',
-        })
-        .then(() => {
+        deleteBook(id).then(() => {
             setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
         });
     }
@@ -23,7 +19,7 @@ function BooksPage() {
     return (
         <div className="container my-5">
             <h1 className="mb-4">Books Catalog</h1>
-            <a className="btn btn-primary mb-3" href="/books/add">Add Book</a>
+            <Link className="btn btn-primary mb-3" to="/books/add">Add Book</Link>
             <table className="table table-striped table-hover">
                 <thead className="table-dark">
                 <tr>

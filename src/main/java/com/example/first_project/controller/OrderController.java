@@ -4,13 +4,12 @@ import com.example.first_project.model.Reader;
 import com.example.first_project.model.Book;
 import com.example.first_project.model.Order;
 import com.example.first_project.service.LibraryService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-@Controller
+@RestController
 @RequestMapping("/orders")
 public class OrderController {
     private final LibraryService libraryService;
