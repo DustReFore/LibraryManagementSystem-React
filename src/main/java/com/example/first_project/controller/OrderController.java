@@ -4,13 +4,12 @@ import com.example.first_project.model.Reader;
 import com.example.first_project.model.Book;
 import com.example.first_project.model.Order;
 import com.example.first_project.service.LibraryService;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
     private final LibraryService libraryService;
 
@@ -18,91 +17,65 @@ public class OrderController {
         this.libraryService = libraryService;
     }
 
-    @GetMapping()
-    public String listOrders(Model model) {
-        model.addAttribute("orders", libraryService.getOrders());
-        return "orders";
+    @GetMapping
+    public List<Order> getOrders() {
+        return libraryService.getOrders();
     }
 
-    @GetMapping("/add")
-    public String showAddForm(Model model) {
-        Order order = new Order();
-        order.setBook(new Book());
-        order.setReader(new Reader());
-
-        model.addAttribute("order", order);
-        model.addAttribute("books", libraryService.getBooks());
-        model.addAttribute("readers", libraryService.getReaders());
-        model.addAttribute("formAction", "/orders/add");
-        model.addAttribute("formTitle", "Add order");
-        model.addAttribute("submitText", "Save order");
-        return "order_form";
-    }
-
-    @PostMapping("/add")
-    public String addOrder(@ModelAttribute Order order) {
-        Book book = libraryService.getBooks().stream()
-                .filter(b -> b.getId() == order.getBook().getId())
-                .findFirst()
-                .orElse(null);
-
-        Reader reader = libraryService.getReaders().stream()
-                .filter(r -> r.getId() == order.getReader().getId())
-                .findFirst()
-                .orElse(null);
-
-        order.setId(libraryService.getOrders().size() + 1);
-        order.setBook(book);
-        order.setReader(reader);
-        order.setDateIssued(LocalDate.now());
-
-        libraryService.addOrder(order);
-        return "redirect:/orders";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable int id, Model model) {
-        Order order = libraryService.getOrders()
+    @GetMapping("/{id}")
+    public Order getOrder(@PathVariable int id) {
+        return libraryService.getOrders()
                 .stream()
                 .filter(o -> o.getId() == id)
                 .findFirst()
                 .orElse(null);
-
-        model.addAttribute("order", order);
-        model.addAttribute("books", libraryService.getBooks());
-        model.addAttribute("readers", libraryService.getReaders());
-        model.addAttribute("formAction", "/orders/edit/" + id);
-        model.addAttribute("formTitle", "Edit order");
-        model.addAttribute("submitText", "Save changes");
-        return "order_form";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editOrder(@PathVariable int id, @ModelAttribute Order order) {
-        Book book = libraryService.getBooks().stream()
-                .filter(b -> b.getId() == order.getBook().getId())
-                .findFirst()
-                .orElse(null);
+    @PostMapping
+    public Order createOrder(@RequestBody Order order) {
+        Book book = findBookById(order.getBook().getId());
+        Reader reader = findReaderById(order.getReader().getId());
 
-        Reader reader = libraryService.getReaders().stream()
-                .filter(r -> r.getId() == order.getReader().getId())
-                .findFirst()
-                .orElse(null);
+        order.setId(libraryService.getOrders().size() + 1);
+        order.setBook(book);
+        order.setReader(reader);
+
+        libraryService.addOrder(order);
+        return order;
+    }
+
+    @PutMapping("/{id}")
+    public Order showEditForm(@PathVariable int id, @RequestBody Order order) {
+        Book book = findBookById(order.getBook().getId());
+        Reader reader = findReaderById(order.getReader().getId());
 
         libraryService.getOrders().removeIf(o -> o.getId() == id);
 
         order.setId(id);
         order.setBook(book);
         order.setReader(reader);
-
-        libraryService.addOrder(order);
-
-        return "redirect:/orders";
+        order.setActive(order.getDateReturned() == null);
+        return order;
     }
 
-    @GetMapping("delete/{id}")
-    public String deleteOrder(@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public void deleteOrder(@PathVariable int id) {
         libraryService.getOrders().removeIf(o -> o.getId() == id);
-        return "redirect:/orders";
+    }
+
+    private Book findBookById(int id) {
+        return libraryService.getBooks()
+                .stream()
+                .filter(b -> b.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Reader findReaderById(int id) {
+        return libraryService.getReaders()
+                .stream()
+                .filter(r -> r.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 }
