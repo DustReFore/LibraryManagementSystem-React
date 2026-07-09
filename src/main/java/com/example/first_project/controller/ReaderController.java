@@ -3,6 +3,7 @@ package com.example.first_project.controller;
 import com.example.first_project.model.Reader;
 import com.example.first_project.service.LibraryService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -21,30 +22,22 @@ public class ReaderController {
 
     @GetMapping("/{id}")
     public Reader getReader(@PathVariable Long id) {
-        return libraryService.getReaders()
-                .stream()
-                .filter(r -> r.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return libraryService.getReaderById(id);
     }
 
     @PostMapping
     public Reader createReader(@RequestBody Reader reader) {
-        reader.setId((long) (libraryService.getReaders().size() + 1));
-        libraryService.addReader(reader);
-        return reader;
+        return libraryService.addReader(reader);
     }
 
     @PutMapping("/{id}")
     public Reader updateReader(@PathVariable Long id, @RequestBody Reader reader) {
-        libraryService.getReaders().removeIf(r -> r.getId().equals(id));
         reader.setId(id);
-        libraryService.addReader(reader);
-        return reader;
+        return libraryService.addReader(reader);
     }
 
     @DeleteMapping("/{id}")
     public void deleteReader(@PathVariable Long id) {
-        libraryService.getReaders().removeIf(r -> r.getId().equals(id));
+        libraryService.deleteReader(id);
     }
 }

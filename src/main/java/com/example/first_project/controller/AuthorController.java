@@ -22,31 +22,22 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     public Author getAuthor(@PathVariable Long id) {
-        return libraryService
-                .getAuthors()
-                .stream()
-                .filter(a -> a.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return libraryService.getAuthorById(id);
     }
 
     @PostMapping
     public Author createAuthor(@RequestBody Author author) {
-        author.setId((long) (libraryService.getAuthors().size() + 1));
-        libraryService.addAuthor(author);
-        return author;
+        return libraryService.addAuthor(author);
     }
 
     @PutMapping("/{id}")
     public Author updateAuthor(@PathVariable Long id, @RequestBody Author author) {
         author.setId(id);
-        libraryService.getAuthors().removeIf(a -> a.getId().equals(id));
-        libraryService.addAuthor(author);
-        return author;
+        return libraryService.addAuthor(author);
     }
 
     @DeleteMapping("/{id}")
     public void deleteAuthor(@PathVariable Long id) {
-        libraryService.getAuthors().removeIf(a -> a.getId().equals(id));
+        libraryService.deleteAuthor(id);
     }
 }

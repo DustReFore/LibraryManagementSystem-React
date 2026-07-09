@@ -56,7 +56,7 @@ function OrderFormPage() {
                 id: Number(form.readerId),
             },
             dateIssued: form.dateIssued,
-            dateReturned: form.dateReturned,
+            dateReturned: form.dateReturned || null,
         };
 
         const request = isEdit ? updateOrder(id, order) : createOrder(order);
@@ -132,7 +132,6 @@ function OrderFormPage() {
                         name="dateReturned"
                         value={form.dateReturned}
                         onChange={handleChange}
-                        required
                     />
                 </div>
 

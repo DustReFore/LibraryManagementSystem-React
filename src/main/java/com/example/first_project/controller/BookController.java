@@ -2,6 +2,7 @@ package com.example.first_project.controller;
 
 import com.example.first_project.model.Author;
 import com.example.first_project.model.Book;
+import com.example.first_project.model.Category;
 import com.example.first_project.service.LibraryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,42 +24,34 @@ public class BookController {
 
     @GetMapping("/{id}")
     public Book getBook(@PathVariable Long id) {
-        return libraryService.getBooks()
-                .stream()
-                .filter(b -> b.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return libraryService.getBookById(id);
     }
 
     @PostMapping
     public Book createBook(@RequestBody Book book) {
-        Author author = libraryService.getAuthors()
-                .stream()
-                .filter(a -> a.getId().equals(book.getAuthor().getId()))
-                .findFirst()
-                .orElse(null);
+        Author author = libraryService.getAuthorById(book.getAuthor().getId());
+        Category category = libraryService.getCategoryByName(book.getCategory().getName());
+
         book.setAuthor(author);
-        book.setId((long) (libraryService.getBooks().size() + 1));
-        libraryService.addBook(book);
-        return book;
+        book.setCategory(category);
+
+        return libraryService.addBook(book);
     }
 
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        Author author = libraryService.getAuthors()
-                .stream()
-                .filter(a -> a.getId().equals(book.getAuthor().getId()))
-                .findFirst()
-                .orElse(null);
-        book.setAuthor(author);
+        Author author = libraryService.getAuthorById(book.getAuthor().getId());
+        Category category = libraryService.getCategoryByName(book.getCategory().getName());
+
         book.setId(id);
-        libraryService.getBooks().removeIf(b -> b.getId().equals(id));
-        libraryService.addBook(book);
-        return book;
+        book.setAuthor(author);
+        book.setCategory(category);
+
+        return libraryService.addBook(book);
     }
 
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id) {
-        libraryService.getBooks().removeIf(b -> b.getId().equals(id));
+        libraryService.deleteBook(id);
     }
 }

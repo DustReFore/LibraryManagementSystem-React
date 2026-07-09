@@ -34,9 +34,6 @@ public class LibraryService {
     public List<Book> getBooks() {
         return bookRepository.findAll();
     }
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
-    }
     public List<Order> getOrders() {
         return orderRepository.findAll();
     }
@@ -50,13 +47,41 @@ public class LibraryService {
     public Book addBook(Book book) {
         return bookRepository.save(book);
     }
-    public Category addCategory(Category category) {
-        return categoryRepository.save(category);
-    }
     public Order addOrder(Order order) {
         return orderRepository.save(order);
     }
     public Reader addReader(Reader reader) {
         return readerRepository.save(reader);
+    }
+
+    public Author getAuthorById(Long id) {
+        return authorRepository.findById(id).orElse(null);
+    }
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id).orElse(null);
+    }
+    public Order getOrderById(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+    public Reader getReaderById(Long id) {
+        return readerRepository.findById(id).orElse(null);
+    }
+
+    public void deleteAuthor(Long id) {
+        authorRepository.deleteById(id);
+    }
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
+    }
+    public void deleteReader(Long id) {
+        readerRepository.deleteById(id);
+    }
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findByName(name)
+                .orElseGet(() -> categoryRepository.save(new Category(null, name)));
     }
 }
