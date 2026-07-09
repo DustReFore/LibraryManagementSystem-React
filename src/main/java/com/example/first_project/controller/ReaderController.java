@@ -20,31 +20,31 @@ public class ReaderController {
     }
 
     @GetMapping("/{id}")
-    public Reader getReader(@PathVariable int id) {
+    public Reader getReader(@PathVariable Long id) {
         return libraryService.getReaders()
                 .stream()
-                .filter(r -> r.getId() == id)
+                .filter(r -> r.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
     @PostMapping
     public Reader createReader(@RequestBody Reader reader) {
-        reader.setId(libraryService.getReaders().size() + 1);
+        reader.setId((long) (libraryService.getReaders().size() + 1));
         libraryService.addReader(reader);
         return reader;
     }
 
     @PutMapping("/{id}")
-    public Reader updateReader(@PathVariable int id, @RequestBody Reader reader) {
-        libraryService.getReaders().removeIf(r -> r.getId() == id);
+    public Reader updateReader(@PathVariable Long id, @RequestBody Reader reader) {
+        libraryService.getReaders().removeIf(r -> r.getId().equals(id));
         reader.setId(id);
         libraryService.addReader(reader);
         return reader;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReader(@PathVariable int id) {
-        libraryService.getReaders().removeIf(r -> r.getId() == id);
+    public void deleteReader(@PathVariable Long id) {
+        libraryService.getReaders().removeIf(r -> r.getId().equals(id));
     }
 }

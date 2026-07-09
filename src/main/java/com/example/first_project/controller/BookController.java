@@ -22,10 +22,10 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Book getBook(@PathVariable int id) {
+    public Book getBook(@PathVariable Long id) {
         return libraryService.getBooks()
                 .stream()
-                .filter(b -> b.getId() == id)
+                .filter(b -> b.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -34,31 +34,31 @@ public class BookController {
     public Book createBook(@RequestBody Book book) {
         Author author = libraryService.getAuthors()
                 .stream()
-                .filter(a -> a.getId() == book.getAuthor().getId())
+                .filter(a -> a.getId().equals(book.getAuthor().getId()))
                 .findFirst()
                 .orElse(null);
         book.setAuthor(author);
-        book.setId(libraryService.getBooks().size() + 1);
+        book.setId((long) (libraryService.getBooks().size() + 1));
         libraryService.addBook(book);
         return book;
     }
 
     @PutMapping("/{id}")
-    public Book updateBook(@PathVariable int id, @RequestBody Book book) {
+    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
         Author author = libraryService.getAuthors()
                 .stream()
-                .filter(a -> a.getId() == book.getAuthor().getId())
+                .filter(a -> a.getId().equals(book.getAuthor().getId()))
                 .findFirst()
                 .orElse(null);
         book.setAuthor(author);
         book.setId(id);
-        libraryService.getBooks().removeIf(b -> b.getId() == id);
+        libraryService.getBooks().removeIf(b -> b.getId().equals(id));
         libraryService.addBook(book);
         return book;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable int id) {
-        libraryService.getBooks().removeIf(b -> b.getId() == id);
+    public void deleteBook(@PathVariable Long id) {
+        libraryService.getBooks().removeIf(b -> b.getId().equals(id));
     }
 }

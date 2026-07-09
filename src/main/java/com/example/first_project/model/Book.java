@@ -1,14 +1,25 @@
 package com.example.first_project.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "books")
 public class Book {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
-    private Author author;
     private int year;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
-
-    public Book(int id, String title, Author author, int year, Category category) {
+    public Book(Long id, String title, Author author, int year, Category category) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -18,8 +29,8 @@ public class Book {
 
     public Book() {}
 
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
 
     public String getTitle() {return title;}
     public void setTitle(String title) {this.title = title;}

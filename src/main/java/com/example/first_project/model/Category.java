@@ -1,18 +1,24 @@
 package com.example.first_project.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "categories")
 public class Category {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 
-    public Category(int id, String name) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
     public Category() {}
 
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
 
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}

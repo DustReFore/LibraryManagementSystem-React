@@ -23,10 +23,10 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable int id) {
+    public Order getOrder(@PathVariable Long id) {
         return libraryService.getOrders()
                 .stream()
-                .filter(o -> o.getId() == id)
+                .filter(o -> o.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -36,7 +36,7 @@ public class OrderController {
         Book book = findBookById(order.getBook().getId());
         Reader reader = findReaderById(order.getReader().getId());
 
-        order.setId(libraryService.getOrders().size() + 1);
+        order.setId((long) (libraryService.getOrders().size() + 1));
         order.setBook(book);
         order.setReader(reader);
 
@@ -45,36 +45,38 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public Order showEditForm(@PathVariable int id, @RequestBody Order order) {
+    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
         Book book = findBookById(order.getBook().getId());
         Reader reader = findReaderById(order.getReader().getId());
 
-        libraryService.getOrders().removeIf(o -> o.getId() == id);
+        libraryService.getOrders().removeIf(o -> o.getId().equals(id));
 
         order.setId(id);
         order.setBook(book);
         order.setReader(reader);
         order.setActive(order.getDateReturned() == null);
+
+        libraryService.addOrder(order);
         return order;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable int id) {
-        libraryService.getOrders().removeIf(o -> o.getId() == id);
+    public void deleteOrder(@PathVariable Long id) {
+        libraryService.getOrders().removeIf(o -> o.getId().equals(id));
     }
 
-    private Book findBookById(int id) {
+    private Book findBookById(Long id) {
         return libraryService.getBooks()
                 .stream()
-                .filter(b -> b.getId() == id)
+                .filter(b -> b.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    private Reader findReaderById(int id) {
+    private Reader findReaderById(Long id) {
         return libraryService.getReaders()
                 .stream()
-                .filter(r -> r.getId() == id)
+                .filter(r -> r.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }

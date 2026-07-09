@@ -1,21 +1,27 @@
 package com.example.first_project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "authors")
 public class Author {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String firstName;
     private String lastName;
     private int yearOfBirth;
     private String country;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "author")
     private List<Book> books =  new ArrayList<Book>();
 
-    public Author(int id, String firstName, String lastName,  int yearOfBirth, String country) {
+    public Author(Long id, String firstName, String lastName,  int yearOfBirth, String country) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,8 +37,8 @@ public class Author {
 
     public Author() {}
 
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
 
     public String getFirstName() {return firstName;}
     public void setFirstName(String firstName) {this.firstName = firstName;}
