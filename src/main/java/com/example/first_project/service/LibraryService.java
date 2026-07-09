@@ -1,37 +1,62 @@
 package com.example.first_project.service;
 
-import com.example.first_project.model.Author;
-import com.example.first_project.model.Book;
-import com.example.first_project.model.Reader;
-import com.example.first_project.model.Order;
+import com.example.first_project.model.*;
+import com.example.first_project.repository.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class LibraryService {
-    private List<Book> books = new ArrayList<>();
-    private List<Author> authors = new ArrayList<>();
-    private List<Reader> readers = new ArrayList<>();
-    private List<Order> orders = new ArrayList<>();
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final CategoryRepository categoryRepository;
+    private final OrderRepository orderRepository;
+    private final ReaderRepository readerRepository;
 
-    public List<Book> getBooks() {return books;}
-    public List<Author> getAuthors() {return authors;}
-    public List<Reader> getReaders() {return readers;}
-    public List<Order> getOrders() {return orders;}
-
-    public void addBook(Book book) {
-        books.add(book);
-        if (book.getAuthor() != null) {
-            book.getAuthor().getBooks().add(book);
-        }
+    public LibraryService(
+            BookRepository bookRepository,
+            AuthorRepository authorRepository,
+            CategoryRepository categoryRepository,
+            OrderRepository orderRepository,
+            ReaderRepository readerRepository
+    ) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+        this.categoryRepository = categoryRepository;
+        this.orderRepository = orderRepository;
+        this.readerRepository = readerRepository;
     }
-    public void addAuthor(Author author) {authors.add(author);}
-    public void addReader(Reader reader) {readers.add(reader);}
-    public void addOrder(Order order) {orders.add(order);}
 
-    public List<Order> getOrderByReader(int readerId) {
-        return orders.stream().filter(o -> o.getReader().getId() == readerId).toList();
+    public List<Author> getAuthors() {
+        return authorRepository.findAll();
+    }
+    public List<Book> getBooks() {
+        return bookRepository.findAll();
+    }
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
+    }
+    public List<Reader> getReaders() {
+        return readerRepository.findAll();
+    }
+
+    public Author addAuthor(Author author) {
+        return authorRepository.save(author);
+    }
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
+    }
+    public Category addCategory(Category category) {
+        return categoryRepository.save(category);
+    }
+    public Order addOrder(Order order) {
+        return orderRepository.save(order);
+    }
+    public Reader addReader(Reader reader) {
+        return readerRepository.save(reader);
     }
 }
