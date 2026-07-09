@@ -9,6 +9,8 @@ import AuthorsPage from "./Pages/AuthorsPage.jsx";
 import AuthorFormPage from "./Pages/AuthorFormPage.jsx";
 import ReadersPage from "./Pages/ReadersPage.jsx";
 import ReaderFormPage from "./Pages/ReaderFormPage.jsx";
+import OrdersPage from "./Pages/OrdersPage.jsx";
+import OrderFormPage from "./Pages/OrderFormPage.jsx";
 
 function App() {
     return (
@@ -25,6 +27,9 @@ function App() {
                 <Route path="/readers" element={<ReadersPage />} />
                 <Route path="/readers/add" element={<ReaderFormPage />} />
                 <Route path="/readers/edit/:id" element={<ReaderFormPage />} />
+                <Route path="/orders" element={<OrdersPage />} />
+                <Route path="/orders/add" element={<OrderFormPage />} />
+                <Route path="/orders/edit/:id" element={<OrderFormPage />} />
             </Routes>
         </>
     );

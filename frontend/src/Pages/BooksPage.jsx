@@ -40,18 +40,8 @@ function BooksPage() {
                             <td>{book.year}</td>
                             <td>{book.category?.name}</td>
                             <td>
-                                <button
-                                    className="btn btn-sm btn-warning"
-                                    onClick={() => navigate(`/books/edit/${book.id}`)}
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    className="btn btn-sm btn-danger"
-                                    onClick={() => handleDelete(book.id)}
-                                >
-                                    Delete
-                                </button>
+                                <button className="btn btn-sm btn-warning" onClick={() => navigate(`/books/edit/${book.id}`)}>Edit</button>
+                                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(book.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}

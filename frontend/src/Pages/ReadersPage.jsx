@@ -53,7 +53,7 @@ function ReadersPage() {
                                 )}
                             </td>
                         <td>
-                            <Link className="btn btn-sm btn-warning" to={`/readers/edit/${reader.id}`}>Edit</Link>
+                            <button className="btn btn-sm btn-warning" onClick={() => navigate(`/readers/edit/${reader.id}`)}>Edit</button>
                             <button className="btn btn-sm btn-danger" onClick={() => handleDelete(reader.id)}>Delete</button>
                         </td>
                         </tr>
