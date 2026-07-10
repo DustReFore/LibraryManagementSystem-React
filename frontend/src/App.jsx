@@ -11,6 +11,7 @@ import ReadersPage from "./Pages/ReadersPage.jsx";
 import ReaderFormPage from "./Pages/ReaderFormPage.jsx";
 import OrdersPage from "./Pages/OrdersPage.jsx";
 import OrderFormPage from "./Pages/OrderFormPage.jsx";
+import LoginPage from "./Pages/LoginPage.jsx";
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/orders" element={<OrdersPage />} />
                 <Route path="/orders/add" element={<OrderFormPage />} />
                 <Route path="/orders/edit/:id" element={<OrderFormPage />} />
+                <Route path="/login" element={<LoginPage />} />
             </Routes>
         </>
     );

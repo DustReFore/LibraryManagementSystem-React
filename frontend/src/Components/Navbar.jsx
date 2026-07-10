@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 
 function Navbar() {
+    const token = localStorage.getItem('token');
+
+    function handleLogout() {
+        localStorage.removeItem('token');
+        window.location.href = "/";
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -12,7 +19,11 @@ function Navbar() {
                         <li className="nav-item"><Link className="nav-link" to="/readers">Readers</Link></li>
                         <li className="nav-item"><Link className="nav-link" to="/orders">Orders</Link></li>
                     </ul>
-                    <Link className="btn btn-outline-dark" to="#">Login</Link>
+                    {token ? (
+                        <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+                    ) : (
+                        <Link className="btn btn-outline-dark" to="/login">Login</Link>
+                    )}
                 </div>
             </div>
         </nav>
