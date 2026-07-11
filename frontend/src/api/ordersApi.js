@@ -1,31 +1,31 @@
+import { apiFetch } from "./apiClient.js";
+
 const API_URL = "/api/orders";
 
 export function getOrders() {
-    return fetch(API_URL).then((res) => res.json());
+    return apiFetch(API_URL);
 }
 
 export function getOrderById(id) {
-    return fetch(`${API_URL}/${id}`).then((res) => res.json());
+    return apiFetch(`${API_URL}/${id}`);
 }
 
 export function createOrder(order) {
-    return fetch(API_URL, {
+    return apiFetch(API_URL, {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
     });
 }
 
 export function updateOrder(id, order) {
-    return fetch(`${API_URL}/${id}`, {
+    return apiFetch(`${API_URL}/${id}`, {
         method: 'PUT',
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
     });
 }
 
 export function deleteOrder(id) {
-    return fetch(`${API_URL}/${id}`, {
+    return apiFetch(`${API_URL}/${id}`, {
         method: 'DELETE',
     });
 }

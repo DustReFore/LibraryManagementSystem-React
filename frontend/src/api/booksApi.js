@@ -1,31 +1,31 @@
+import { apiFetch } from "./apiClient.js";
+
 const API_URL = "/api/books";
 
 export function getBooks() {
-    return fetch(API_URL).then((res) => res.json());
+    return apiFetch(API_URL);
 }
 
 export function getBookById(id) {
-    return fetch(`${API_URL}/${id}`).then((res) => res.json());
+    return apiFetch(`${API_URL}/${id}`);
 }
 
 export function createBook(book) {
-    return fetch(API_URL, {
+    return apiFetch(API_URL, {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(book),
     });
 }
 
 export function updateBook(id, book) {
-    return fetch(`${API_URL}/${id}`, {
+    return apiFetch(`${API_URL}/${id}`, {
         method: 'PUT',
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(book),
     });
 }
 
 export function deleteBook(id) {
-    return fetch(`${API_URL}/${id}`, {
+    return apiFetch(`${API_URL}/${id}`, {
         method: 'DELETE',
     });
 }

@@ -1,25 +1,25 @@
+import { apiFetch } from "./apiClient.js";
+
 const API_URL = "/api/authors";
 
 export function getAuthors() {
-    return fetch(API_URL).then((res) => res.json());
+    return apiFetch(API_URL);
 }
 
 export function getAuthorById(id) {
-    return fetch(`${API_URL}/${id}`).then((res) => res.json());
+    return apiFetch(`${API_URL}/${id}`);
 }
 
 export function createAuthor(author) {
-    return fetch(API_URL, {
+    return apiFetch(API_URL, {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(author),
     });
 }
 
 export function updateAuthor(id, author) {
-    return fetch(`${API_URL}/${id}`, {
+    return apiFetch(`${API_URL}/${id}`, {
         method: 'PUT',
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(author),
     });
 }
