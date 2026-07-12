@@ -1,5 +1,8 @@
 package com.example.first_project.service;
 
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.example.first_project.dto.AuthResponse;
 import com.example.first_project.dto.LoginRequest;
 import com.example.first_project.dto.RegisterRequest;
@@ -15,6 +18,12 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    @Value("${app.admin.username}")
+    private String adminUsername;
+
+    @Value("${app.admin.password}")
+    private String adminPassword;
+
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
@@ -25,6 +34,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username is already taken");
@@ -42,6 +52,15 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        if (request.getUsername().equals(adminUsername) && request.getPassword().equals(adminPassword)) {
+            User admin = new User();
+            admin.setUsername(adminUsername);
+            admin.setRole(Role.ADMIN);
+
+            String token = jwtService.generateToken(admin);
+            return new AuthResponse(token);
+        }
+
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
 

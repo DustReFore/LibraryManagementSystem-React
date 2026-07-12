@@ -2,11 +2,13 @@ package com.example.first_project.service;
 
 import com.example.first_project.model.*;
 import com.example.first_project.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class LibraryService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
