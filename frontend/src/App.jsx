@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Navbar from "./Components/Navbar";
 
@@ -12,11 +13,14 @@ import ReaderFormPage from "./Pages/ReaderFormPage.jsx";
 import OrdersPage from "./Pages/OrdersPage.jsx";
 import OrderFormPage from "./Pages/OrderFormPage.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
+import RegisterPage from "./Pages/RegisterPage.jsx";
 
 function App() {
+    const [token, setToken] = useState(localStorage.getItem('token'));
+
     return (
         <>
-            <Navbar/>
+            <Navbar token={token} setToken={setToken} />
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/books" element={<BooksPage />} />
@@ -31,7 +35,8 @@ function App() {
                 <Route path="/orders" element={<OrdersPage />} />
                 <Route path="/orders/add" element={<OrderFormPage />} />
                 <Route path="/orders/edit/:id" element={<OrderFormPage />} />
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/login" element={<LoginPage setToken={setToken} />} />
+                <Route path="/register" element={<RegisterPage setToken={setToken} />} />
             </Routes>
         </>
     );
