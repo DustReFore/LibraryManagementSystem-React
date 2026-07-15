@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteReader, getReaders } from "../api/readersApi.js";
+import { getOrders } from "../api/ordersApi.js";
 
 function ReadersPage() {
     const [ readers, setReaders ] = useState([]);
+    const [ orders, setOrders ] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         getReaders().then(setReaders);
+        getOrders().then(setOrders);
     }, []);
 
     function handleDelete(id) {
@@ -41,16 +44,11 @@ function ReadersPage() {
                             <td>{reader.yearOfBirth}</td>
                             <td>{reader.email}</td>
                             <td>
-                                {reader.orders && reader.orders.length > 0 ? (
-                                    reader.orders.map((order, index) => (
-                                        <span key={order.id}>
-                                            {order.book ? order.book.title : '-'}
-                                            {index < reader.orders.length - 1 && ', '}
-                                        </span>
-                                    ))
-                                ) : (
-                                    '-'
-                                )}
+                                {orders
+                                    .filter((order) => order.reader?.id === reader.id)
+                                    .map((order) => order.book ? order.book.title : '-')
+                                    .join(', ')
+                                }
                             </td>
                         <td>
                             <button className="btn btn-sm btn-warning" onClick={() => navigate(`/readers/edit/${reader.id}`)}>Edit</button>

@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteAuthor, getAuthors } from "../api/authorsApi.js";
+import { getBooks } from "../api/booksApi.js";
 
 function AuthorsPage() {
     const [authors, setAuthors] = useState([]);
+    const [books, setBooks] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         getAuthors().then(setAuthors);
+        getBooks().then(setBooks);
     }, []);
 
     function handleDelete(id) {
@@ -41,12 +44,11 @@ function AuthorsPage() {
                             <td>{author.yearOfBirth}</td>
                             <td>{author.country}</td>
                             <td>
-                                {(author.books ?? []).map((book, index, books) => (
-                                    <span key={book.id}>
-                                        {book.title}
-                                        {index < books.length - 1 && ", "}
-                                    </span>
-                                ))}
+                                {books
+                                    .filter((book) => book.author?.id === author.id)
+                                    .map((book) => book.title)
+                                    .join(', ')
+                                }
                             </td>
 
                             <td>
